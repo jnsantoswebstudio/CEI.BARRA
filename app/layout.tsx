@@ -14,12 +14,12 @@ export const metadata: Metadata = {
   title: 'CEI Barra | Centro Evangelístico Internacional',
   description:
     'Conheça a CEI Barra em Barra de São João. Uma comunidade para viver a fé, crescer na Palavra e caminhar em comunhão.',
-  icons: { icon: '/favicon.svg' },
+  icons: { icon: 'favicon.svg' },
   openGraph: {
     title: 'CEI Barra | Há lugar para você aqui',
     description:
       'Conheça a CEI Barra, encontre os canais oficiais e planeje sua visita à comunidade.',
-    images: [{ url: '/og.png', width: 1200, height: 630, alt: 'CEI Barra — site institucional' }],
+    images: [{ url: 'og.png', width: 1200, height: 630, alt: 'CEI Barra — site institucional' }],
     locale: 'pt_BR',
     type: 'website',
   },
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: 'CEI Barra | Há lugar para você aqui',
     description:
       'Conheça a CEI Barra, encontre os canais oficiais e planeje sua visita à comunidade.',
-    images: ['/og.png'],
+    images: ['og.png'],
   },
 };
 

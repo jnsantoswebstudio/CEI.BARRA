@@ -48,3 +48,14 @@ npm run format
 O projeto está preparado para ser versionado no GitHub. O workflow em `.github/workflows/ci.yml` executa instalação, lint e build a cada push e pull request.
 
 > O conteúdo e as informações institucionais da CEI Barra foram mantidos; a organização do repositório foi ajustada para facilitar manutenção e publicação.
+
+
+## GitHub Pages
+
+O projeto já está configurado para publicar automaticamente no GitHub Pages. O workflow em `.github/workflows/deploy.yml` gera o site e publica o conteúdo de `dist/client`.
+
+### Importante
+
+No GitHub, abra **Settings → Pages → Build and deployment → Source** e selecione **GitHub Actions**. Depois faça um novo push para `main` ou `master`.
+
+O endereço esperado é `https://jnsantoswebstudio.github.io/CEI.BARRA/`.
