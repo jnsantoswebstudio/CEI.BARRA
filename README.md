@@ -1,25 +1,39 @@
 # CEI Barra
 
-Site institucional da **CEI Barra — Centro Evangelístico Internacional**, desenvolvido com React, TypeScript, Tailwind CSS e Vinext.
+Site institucional da **CEI Barra — Centro Evangelístico Internacional**, preparado para publicação no GitHub Pages.
 
-## Requisitos
+## O problema que foi corrigido
 
-- Node.js 22.13+ (recomendado)
-- npm 10+
+O GitHub estava mostrando esta tela com **"CEI Barra" + instalação + npm install** porque o Pages estava tratando o `README.md` como página do site.
 
-## Instalação
+Este pacote foi reorganizado para evitar isso:
+
+- `index.html` agora existe na raiz do repositório.
+- Há uma versão estática de fallback no próprio `index.html`, então o site aparece mesmo quando o Pages estiver configurado temporariamente como **Deploy from a branch**.
+- A versão React continua em `src/` e é construída pelo Vite.
+- O workflow `.github/workflows/deploy.yml` publica automaticamente a pasta `dist/` no GitHub Pages.
+- `.nojekyll` foi incluído para evitar processamento desnecessário do Jekyll.
+
+## Configuração recomendada do GitHub Pages
+
+No repositório:
+
+**Settings → Pages → Build and deployment → Source → GitHub Actions**
+
+Depois faça um novo push na branch `main`.
+
+O workflow é iniciado automaticamente e publica o build do site.
+
+### Alternativa
+
+Caso o Pages ainda esteja em **Deploy from a branch**, o `index.html` da raiz será usado em vez do `README.md`. Essa versão é o fallback estático do site; para usar o build React completo, prefira **GitHub Actions**.
+
+## Rodar localmente
 
 ```bash
-npm install
-```
-
-## Desenvolvimento
-
-```bash
+npm ci
 npm run dev
 ```
-
-O servidor local será iniciado pelo Vinext/Vite.
 
 ## Build
 
@@ -27,35 +41,8 @@ O servidor local será iniciado pelo Vinext/Vite.
 npm run build
 ```
 
-## Verificação
+A pasta gerada é `dist/`.
 
-```bash
-npm run lint
-npm run format
-```
+## Conteúdo
 
-## Estrutura
-
-- `app/` — páginas, layout e estilos globais
-- `components/` — componentes de interface
-- `hooks/` — hooks reutilizáveis
-- `lib/` — utilitários
-- `public/` — imagens, favicon e Open Graph
-- `docs/` — capturas e material estratégico do projeto
-
-## Publicação
-
-O projeto está preparado para ser versionado no GitHub. O workflow em `.github/workflows/ci.yml` executa instalação, lint e build a cada push e pull request.
-
-> O conteúdo e as informações institucionais da CEI Barra foram mantidos; a organização do repositório foi ajustada para facilitar manutenção e publicação.
-
-
-## GitHub Pages
-
-O projeto já está configurado para publicar automaticamente no GitHub Pages. O workflow em `.github/workflows/deploy.yml` gera o site e publica o conteúdo de `dist/client`.
-
-### Importante
-
-No GitHub, abra **Settings → Pages → Build and deployment → Source** e selecione **GitHub Actions**. Depois faça um novo push para `main` ou `master`.
-
-O endereço esperado é `https://jnsantoswebstudio.github.io/CEI.BARRA/`.
+As imagens e informações institucionais fornecidas no projeto foram mantidas. Os avisos que indicam dados ainda a confirmar permanecem sinalizados na interface.
