@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/postcss';
 import { resolve } from 'node:path';
 
 export default defineConfig({
-  base: '/CEI.BARRA/',
+  base: './',
   plugins: [react()],
   css: { postcss: { plugins: [tailwindcss()] } },
   resolve: { alias: { '@': resolve(process.cwd(), '.') } },
