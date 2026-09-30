@@ -1,37 +1,19 @@
-# CEI Barra
+# CEI.BARRA
 
-Site institucional da **CEI Barra — Centro Evangelístico Internacional**, preparado para publicação no GitHub Pages.
+Site institucional da CEI Barra — Centro Evangelístico Internacional.
 
-## O problema que foi corrigido
+## GitHub Pages
 
-O GitHub estava mostrando esta tela com **"CEI Barra" + instalação + npm install** porque o Pages estava tratando o `README.md` como página do site.
+Este projeto está preparado para o repositório **CEI.BARRA** no GitHub Pages.
 
-Este pacote foi reorganizado para evitar isso:
+O Vite usa a base `/CEI.BARRA/` e as imagens públicas são montadas usando essa base, para que funcionem no endereço:
 
-- `index.html` agora existe na raiz do repositório.
-- Há uma versão estática de fallback no próprio `index.html`, então o site aparece mesmo quando o Pages estiver configurado temporariamente como **Deploy from a branch**.
-- A versão React continua em `src/` e é construída pelo Vite.
-- O workflow `.github/workflows/deploy.yml` publica automaticamente a pasta `dist/` no GitHub Pages.
-- `.nojekyll` foi incluído para evitar processamento desnecessário do Jekyll.
+`https://jnsantoswebstudio.github.io/CEI.BARRA/`
 
-## Configuração recomendada do GitHub Pages
-
-No repositório:
-
-**Settings → Pages → Build and deployment → Source → GitHub Actions**
-
-Depois faça um novo push na branch `main`.
-
-O workflow é iniciado automaticamente e publica o build do site.
-
-### Alternativa
-
-Caso o Pages ainda esteja em **Deploy from a branch**, o `index.html` da raiz será usado em vez do `README.md`. Essa versão é o fallback estático do site; para usar o build React completo, prefira **GitHub Actions**.
-
-## Rodar localmente
+## Instalação local
 
 ```bash
-npm ci
+npm install
 npm run dev
 ```
 
@@ -39,10 +21,11 @@ npm run dev
 
 ```bash
 npm run build
+npm run preview
 ```
 
-A pasta gerada é `dist/`.
+## Publicação
 
-## Conteúdo
+O arquivo `.github/workflows/deploy.yml` faz o build e publica automaticamente no GitHub Pages a cada push na `main` ou `master`.
 
-As imagens e informações institucionais fornecidas no projeto foram mantidas. Os avisos que indicam dados ainda a confirmar permanecem sinalizados na interface.
+No GitHub, deixe **Settings → Pages → Build and deployment → Source** como **GitHub Actions**.

@@ -35,6 +35,8 @@ import { Input } from '@/components/ui/input';
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select';
 import { Textarea } from '@/components/ui/textarea';
 
+const assetPath = (name: string) => `${import.meta.env.BASE_URL}images/${name}`;
+
 const mapsUrl =
   'https://www.google.com/maps/search/?api=1&query=Rua+Arist%C3%B3bulo+Pelodan%2C+499%2C+Barra+de+S%C3%A3o+Jo%C3%A3o%2C+Casimiro+de+Abreu%2C+RJ';
 
@@ -64,25 +66,25 @@ const channels = [
 
 const gallery = [
   {
-    src: '/images/cei-culto-comunidade.jpg',
+    src: assetPath('cei-culto-comunidade.jpg'),
     alt: 'Comunidade reunida na CEI Barra',
     label: 'Comunhão',
     className: 'md:col-span-2 md:row-span-2',
   },
   {
-    src: '/images/cei-palavra.jpg',
+    src: assetPath('cei-palavra.jpg'),
     alt: 'Ministração da Palavra na CEI Barra',
     label: 'Palavra',
     className: '',
   },
   {
-    src: '/images/cei-mulheres.jpg',
+    src: assetPath('cei-mulheres.jpg'),
     alt: 'Encontro realizado na CEI Barra',
     label: 'Encontros',
     className: '',
   },
   {
-    src: '/images/cei-celebracao.jpg',
+    src: assetPath('cei-celebracao.jpg'),
     alt: 'Celebração no templo da CEI Barra',
     label: 'Celebração',
     className: 'md:col-span-2',
@@ -103,7 +105,7 @@ export default function Home() {
         <div className="mx-auto flex h-24 max-w-[1440px] items-center justify-between px-5 md:px-10 lg:px-16">
           <a href="#inicio" className="flex items-center gap-3" aria-label="CEI Barra — Início">
             <img
-              src="./images/cei-barra-logo.png"
+              src={assetPath('cei-barra-logo.png')}
               alt="Símbolo CEI Barra"
               width="56"
               height="56"
@@ -166,7 +168,7 @@ export default function Home() {
       </header>
 
       <section id="inicio" className="relative isolate min-h-[820px] bg-[#08120e] pt-28 md:min-h-[900px]">
-        <img src="./images/cei-interior.jpg" alt="Interior da CEI Barra durante uma reunião" className="absolute inset-0 -z-20 h-full w-full object-cover object-center opacity-65" fetchPriority="high" />
+        <img src={assetPath('cei-interior.jpg')} alt="Interior da CEI Barra durante uma reunião" className="absolute inset-0 -z-20 h-full w-full object-cover object-center opacity-65" fetchPriority="high" />
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(4,11,8,.96)_0%,rgba(4,11,8,.78)_43%,rgba(4,11,8,.25)_78%,rgba(4,11,8,.54)_100%)]" />
         <div className="absolute -left-28 top-64 -z-10 h-96 w-96 rounded-full bg-[#34d399]/15 blur-3xl" />
 
@@ -224,7 +226,7 @@ export default function Home() {
           <div className="relative mx-auto w-full max-w-[610px]">
             <div className="absolute -left-5 -top-5 -z-10 h-full w-full rounded-t-[11rem] border border-[#93ab97]" />
             <div className="relative h-[620px] overflow-hidden rounded-t-[10rem] rounded-b-[2rem] bg-[#102219] shadow-[0_30px_80px_rgba(24,49,34,.2)]">
-              <img src="./images/cei-palavra.jpg" alt="Celebração e Palavra na CEI Barra" className="absolute inset-0 h-full w-full object-cover object-center" loading="lazy" />
+              <img src={assetPath('cei-palavra.jpg')} alt="Celebração e Palavra na CEI Barra" className="absolute inset-0 h-full w-full object-cover object-center" loading="lazy" />
               <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-8 pt-28 text-white">
                 <p className="font-serif text-3xl leading-tight">“Uma igreja a serviço do Senhor Jesus.”</p>
                 <span className="mt-3 block text-xs uppercase tracking-[0.2em] text-white/60">Apresentação pública da CEI Barra</span>
@@ -287,7 +289,7 @@ export default function Home() {
           <div className="mt-12 grid auto-rows-[260px] gap-4 md:grid-cols-4 md:auto-rows-[300px]">
             {gallery.map((photo) => (
               <figure key={photo.src} className={`group relative overflow-hidden rounded-[1.5rem] bg-[#102219] ${photo.className}`}>
-                <img src={`.${photo.src}`} alt={photo.alt} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" loading="lazy" />
+                <img src={photo.src} alt={photo.alt} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" loading="lazy" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
                 <figcaption className="absolute bottom-5 left-5 rounded-full border border-white/20 bg-black/30 px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-md">{photo.label}</figcaption>
               </figure>
@@ -300,7 +302,7 @@ export default function Home() {
       <section id="oracao" className="px-5 pb-24 md:px-10 md:pb-32 lg:px-16">
         <div className="mx-auto grid max-w-[1320px] overflow-hidden rounded-[2.5rem] bg-[#e3efde] lg:grid-cols-[.88fr_1.12fr]">
           <div className="relative isolate min-h-[520px] overflow-hidden bg-[#102219] p-8 text-white md:p-12 lg:min-h-[700px] lg:p-16">
-            <img src="./images/cei-mulheres.jpg" alt="Momento de ministração na CEI Barra" className="absolute inset-0 -z-20 h-full w-full object-cover opacity-38" loading="lazy" />
+            <img src={assetPath('cei-mulheres.jpg')} alt="Momento de ministração na CEI Barra" className="absolute inset-0 -z-20 h-full w-full object-cover opacity-38" loading="lazy" />
             <div className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(10,24,17,.42),rgba(10,24,17,.96))]" />
             <div className="flex h-full flex-col justify-between">
               <span className="grid h-14 w-14 place-items-center rounded-full bg-[#b9ef70] text-[#102219]"><Heart size={23} /></span>
@@ -447,7 +449,7 @@ export default function Home() {
       <footer className="bg-[#050b08] px-5 pb-28 pt-12 text-white/65 md:px-10 md:pb-12 lg:px-16">
         <div className="mx-auto grid max-w-[1320px] gap-10 border-b border-white/10 pb-10 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-3"><img src="./images/cei-barra-logo.png" alt="CEI Barra" width="48" height="48" className="h-12 w-12 rounded-full" loading="lazy" /><strong className="font-serif text-2xl text-white">CEI BARRA</strong></div>
+            <div className="flex items-center gap-3"><img src={assetPath('cei-barra-logo.png')} alt="CEI Barra" width="48" height="48" className="h-12 w-12 rounded-full" loading="lazy" /><strong className="font-serif text-2xl text-white">CEI BARRA</strong></div>
             <p className="mt-5 max-w-md text-sm leading-6">Centro Evangelístico Internacional de Barra de São João. Informações institucionais, horários e contatos serão validados antes da publicação oficial.</p>
           </div>
           <div><span className="text-xs font-bold uppercase tracking-[.18em] text-white">Navegação</span><div className="mt-4 grid gap-3 text-sm"><a href="#sobre">Quem somos</a><a href="#conectar">Conecte-se</a><a href="#galeria">Momentos</a><a href="#visita">Localização</a></div></div>
