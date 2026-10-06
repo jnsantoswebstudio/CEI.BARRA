@@ -1,20 +1,24 @@
-# CEI Barra
+# CEI.BARRA
 
 Site institucional da CEI Barra — Centro Evangelístico Internacional.
 
+A interface foi redesenhada com uma direção mais editorial e contemporânea: tipografia forte, composição assimétrica, fotos reais da comunidade, navegação objetiva e CTAs claros para visita, oração e canais oficiais.
+
 ## GitHub Pages
 
-Este projeto foi preparado para funcionar tanto com **GitHub Actions** quanto com **Deploy from a branch**. As imagens existem em `images/` na raiz e também em `public/images/`, e os caminhos usam URLs relativas (`./images/...`) para funcionar no endereço do projeto no GitHub Pages.
+O projeto funciona em duas formas:
 
-### Opção recomendada: GitHub Actions
+### GitHub Actions — recomendado
 
-No GitHub, abra **Settings → Pages → Build and deployment → Source → GitHub Actions**.
+Em **Settings → Pages → Build and deployment**, selecione **GitHub Actions** como Source.
 
-Depois faça `push` na branch `main` ou `master`. O workflow `.github/workflows/deploy.yml` faz o build e publica `dist/`.
+Ao fazer `push` na branch `main` ou `master`, o workflow `.github/workflows/deploy.yml` instala as dependências, executa `npm run build` e publica a pasta `dist/`.
 
-### Opção alternativa: Deploy from a branch
+### Deploy from a branch
 
-Selecione a branch `main` e a pasta `/ (root)`. A página `index.html` da raiz já é autocontida e as imagens estão em `images/`, portanto não depende do diretório `public/`.
+Também existe uma página estática autocontida em `index.html` na raiz. Com **Deploy from a branch → main → /(root)**, ela funciona sem depender do build do Vite.
+
+As imagens usadas pela página estática ficam diretamente em `images/`.
 
 ## Desenvolvimento
 

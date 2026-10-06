@@ -1,12 +1,26 @@
-# Deploy do CEI Barra no GitHub Pages
+# Deploy do CEI.BARRA no GitHub Pages
 
-## Erro anterior das imagens
+## Opção recomendada: GitHub Actions
 
-O projeto tinha as imagens somente em `public/images/`, mas o GitHub Pages estava sendo executado pela raiz do repositório. Nesse modo, `public/` não vira automaticamente uma pasta pública, então `./images/...` retornava 404.
+No GitHub, abra:
 
-Nesta versão existem duas cópias das imagens:
+**Settings → Pages → Build and deployment → Source → GitHub Actions**
 
-- `images/` — usada diretamente quando o Pages publica a raiz do repositório.
-- `public/images/` — copiada pelo Vite para `dist/images/` quando o Pages usa GitHub Actions.
+Depois faça `push` na branch `main` ou `master`.
 
-O `vite.config.ts` usa `base: './'`, evitando caminhos absolutos presos ao nome do repositório.
+O workflow faz o build com Vite e publica `dist/` usando o GitHub Pages Actions.
+
+## Opção alternativa: raiz do repositório
+
+O arquivo `index.html` da raiz é uma versão estática completa do site e não depende de React para renderizar.
+
+Nesse caso use:
+
+- Branch: `main`
+- Folder: `/ (root)`
+
+As imagens ficam em `images/` na raiz para evitar os erros anteriores de caminho no GitHub Pages.
+
+## Imagens no React/Vite
+
+O React usa `import.meta.env.BASE_URL` para montar os caminhos das imagens. O Vite está configurado com `base: './'`, deixando os assets relativos e compatíveis com o endereço do projeto no GitHub Pages.
