@@ -2,7 +2,7 @@
 
 **Preparado por:** JN Santos Web Studio  
 **Data da pesquisa:** 2 de setembro de 2026  
-**Status:** conceito visual não oficial para apresentação comercial  
+**Status:** projeto do site institucional da CEI Barra  
 **Demonstração navegável:** [abrir o protótipo publicado](https://cei-barra-conceito-jn-santos.jonathas16-vasco.chatgpt.site)
 
 > Regra de integridade aplicada: horários, liderança, telefone/WhatsApp, programação fixa e demais informações não confirmadas foram marcados como **informação a confirmar**. O formulário do protótipo é demonstrativo e não envia dados.
@@ -101,7 +101,7 @@ A ação principal não é “compre agora”; é **“planeje sua visita”**. 
 
 ### Estilo visual recomendado
 
-Direção **editorial, contemporânea e acolhedora**, com forte contraste, fotografias reais e detalhes luminosos. O conceito mantém o preto, branco e verde da identidade, mas evita aparência de template genérico.
+Direção **acolhedora, institucional e contemporânea**, com fotografias reais, navegação simples e referências visuais de sites de igrejas. A proposta mantém o verde, preto e branco da identidade e evita aparência de template genérico ou excessivamente tecnológica.
 
 - **Preto profundo:** seriedade, foco e contraste para fotografias de culto.
 - **Verde institucional:** continuidade com a marca.
@@ -232,7 +232,6 @@ Também serão recomendados:
 
 ### Home
 
-- aviso discreto de “conceito visual não oficial”;
 - logo e menu;
 - foto real do templo;
 - título: “Há lugar para você aqui”;

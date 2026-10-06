@@ -8,4 +8,5 @@ export default defineConfig({
   plugins: [react()],
   css: { postcss: { plugins: [tailwindcss()] } },
   resolve: { alias: { '@': resolve(process.cwd(), '.') } },
+  build: { outDir: 'dist', emptyOutDir: true },
 });

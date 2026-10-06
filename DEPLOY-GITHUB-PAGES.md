@@ -1,26 +1,9 @@
-# Deploy do CEI.BARRA no GitHub Pages
+# Publicação no GitHub Pages
 
-## Opção recomendada: GitHub Actions
+1. Envie o conteúdo desta pasta para a raiz do repositório `CEI.BARRA`.
+2. Garanta que `index.html` e `images/` apareçam diretamente na raiz.
+3. Em **Settings → Pages**, use **GitHub Actions** para a versão React/Vite.
+4. Ao fazer push na `main`, o workflow `.github/workflows/deploy.yml` cria e publica `dist/`.
+5. O `index.html` da raiz também pode ser usado em **Deploy from a branch / root**, caso prefira hospedagem estática direta.
 
-No GitHub, abra:
-
-**Settings → Pages → Build and deployment → Source → GitHub Actions**
-
-Depois faça `push` na branch `main` ou `master`.
-
-O workflow faz o build com Vite e publica `dist/` usando o GitHub Pages Actions.
-
-## Opção alternativa: raiz do repositório
-
-O arquivo `index.html` da raiz é uma versão estática completa do site e não depende de React para renderizar.
-
-Nesse caso use:
-
-- Branch: `main`
-- Folder: `/ (root)`
-
-As imagens ficam em `images/` na raiz para evitar os erros anteriores de caminho no GitHub Pages.
-
-## Imagens no React/Vite
-
-O React usa `import.meta.env.BASE_URL` para montar os caminhos das imagens. O Vite está configurado com `base: './'`, deixando os assets relativos e compatíveis com o endereço do projeto no GitHub Pages.
+Não coloque o ZIP dentro do repositório.
