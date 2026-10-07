@@ -21,8 +21,56 @@ function merge(base,extra){const out={...base,...extra}; out.settings={...base.s
 let state=load();
 function save(){localStorage.setItem(CONTENT_KEY,JSON.stringify(state))}
 const img=n=>String(n||'').startsWith('data:')?n:`./images/${n}`;
-function renderSpeakers(){const items=state.speakers.filter(x=>x.active);const track=document.getElementById('speakerTrack');track.innerHTML=items.map(s=>`<article class="speaker-card ${s.image?'':'no-image'}">${s.image?`<img src="${img(escAttr(s.image))}" alt="">`:`<div class="speaker-placeholder">CEI</div>`}<span class="speaker-tag">PRÓXIMO</span><div class="speaker-overlay"><span class="speaker-date">${esc(s.date)}</span><h3>${esc(s.name)}</h3><p>${esc(s.note||'')}</p></div></article>`).join('') || '<p>Nenhuma ministração cadastrada.</p>'; setupCarousel(items.length)}
-function setupCarousel(count){let index=0;const track=document.getElementById('speakerTrack');const dots=document.getElementById('speakerDots');const visible=()=>innerWidth<=760?1:innerWidth<=1050?2:3;function draw(){const v=visible();const max=Math.max(0,count-v);index=Math.min(index,max);const card=track.querySelector('.speaker-card');if(card){const gap=18;const width=card.getBoundingClientRect().width+gap;track.style.transform=`translateX(${-index*width}px)`}dots.innerHTML='';const pages=Math.max(1,max+1);for(let i=0;i<pages;i++){const b=document.createElement('button');b.className=i===index?'active':'';b.onclick=()=>{index=i;draw()};dots.appendChild(b)}};document.getElementById('speakerPrev').onclick=()=>{index=Math.max(0,index-1);draw()};document.getElementById('speakerNext').onclick=()=>{index=Math.min(Math.max(0,count-visible()),index+1);draw()};addEventListener('resize',draw);requestAnimationFrame(draw)}
+function renderSpeakers(){
+  const items=state.speakers.filter(x=>x.active);
+  const track=document.getElementById('speakerTrack');
+  const dots=document.getElementById('speakerDots');
+  const empty=`<div class="speaker-empty"><div class="speaker-empty-mark">✦</div><h3>Próximos pregadores</h3><p>A agenda de ministrações será atualizada em breve.</p><a class="line-link" href="./admin.html">Atualizar agenda →</a></div>`;
+  track.innerHTML=items.map((s,i)=>`<article class="speaker-card ${s.image?'':'no-image'}" tabindex="0" aria-label="${escAttr(s.name)}">
+    ${s.image?`<img src="${img(escAttr(s.image))}" alt="${escAttr(s.name)}">`:`<div class="speaker-placeholder">CEI</div>`}
+    <div class="speaker-shade"></div>
+    <span class="speaker-tag"><i></i> PRÓXIMA MINISTRAÇÃO</span>
+    <div class="speaker-overlay"><span class="speaker-date">${esc(s.date)}</span><h3>${esc(s.name)}</h3><p>${esc(s.note||'Palavra e comunhão com a igreja.')}</p></div>
+    <div class="speaker-index">${String(i+1).padStart(2,'0')}</div>
+  </article>`).join('') || empty;
+  const isCarousel=items.length>1;
+  document.getElementById('speakerPrev').disabled=!isCarousel;
+  document.getElementById('speakerNext').disabled=!isCarousel;
+  if(isCarousel) setupCarousel(items.length); else { track.style.transform='none'; dots.innerHTML=''; }
+}
+function setupCarousel(count){
+  const track=document.getElementById('speakerTrack');
+  const dots=document.getElementById('speakerDots');
+  let index=0, timer=null, resizeTimer=null;
+  const visible=()=>window.innerWidth<=760?1:window.innerWidth<=1050?2:3;
+  const maxIndex=()=>Math.max(0,count-visible());
+  const draw=()=>{
+    const v=visible();
+    index=Math.min(index,Math.max(0,count-v));
+    const card=track.querySelector('.speaker-card');
+    if(card){const gap=18;const width=card.getBoundingClientRect().width+gap;track.style.transform=`translate3d(${-index*width}px,0,0)`;}
+    dots.innerHTML='';
+    const pages=Math.max(1,maxIndex()+1);
+    for(let i=0;i<pages;i++){
+      const b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label',`Ir para grupo ${i+1}`); b.className=i===index?'active':'';
+      b.onclick=()=>{index=i;draw();restart()}; dots.appendChild(b);
+    }
+  };
+  const next=()=>{index=index>=maxIndex()?0:index+1;draw()};
+  const prev=()=>{index=index<=0?maxIndex():index-1;draw()};
+  const restart=()=>{clearInterval(timer);timer=setInterval(next,6500)};
+  document.getElementById('speakerPrev').onclick=()=>{prev();restart()};
+  document.getElementById('speakerNext').onclick=()=>{next();restart()};
+  const viewport=document.querySelector('.speaker-viewport');
+  let downX=0,dragging=false;
+  viewport.onpointerdown=e=>{downX=e.clientX;dragging=true;viewport.setPointerCapture?.(e.pointerId);track.classList.add('dragging');clearInterval(timer)};
+  viewport.onpointerup=e=>{if(!dragging)return;const dx=e.clientX-downX;dragging=false;track.classList.remove('dragging');if(Math.abs(dx)>45){dx<0?next():prev()}draw();restart()};
+  viewport.onpointercancel=()=>{dragging=false;track.classList.remove('dragging');restart()};
+  viewport.onmouseenter=()=>clearInterval(timer);viewport.onmouseleave=restart;
+  viewport.onfocusin=()=>clearInterval(timer);viewport.onfocusout=restart;
+  addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(draw,160)});
+  draw();restart();
+}
 function renderServices(){const list=state.services.filter(x=>x.active);document.getElementById('services').innerHTML=list.map((s,i)=>`<article class="service ${i===0?'today':''}"><div><span class="day">${esc(s.day)}</span><h3>${esc(s.title)}</h3><div class="time">${esc(s.time)}</div><p>${esc(s.description)}</p></div><div class="meta"><span>${esc(s.location)}</span><span>${i===0?'PRÓXIMO':''}</span></div></article>`).join('')||'<p>Nenhum horário cadastrado.</p>';if(list[0]){document.getElementById('heroDay').textContent=`${list[0].day} • ${list[0].time}`;document.getElementById('heroTitle').textContent=list[0].title}}
 function renderEvents(){document.getElementById('events').innerHTML=state.events.filter(x=>x.active).map(e=>`<article class="event"><div class="event-date"><span>${esc(e.month)}</span><strong>${esc(e.day)}</strong></div><div><h3>${esc(e.title)}</h3><p>${esc(e.description)}</p></div></article>`).join('')}
 function esc(v){return String(v??'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}function escAttr(v){return String(v??'').replace(/[^a-zA-Z0-9._/-]/g,'')}

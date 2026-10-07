@@ -20,3 +20,7 @@ Acesse `admin.html`.
 
 Usuário: `admin`
 Senha: `cei2026`
+
+
+### Carrossel de pregadores
+A seção "Próximos pregadores" da página inicial recebe os dados cadastrados no painel administrativo e possui navegação por setas, pontos, autoplay e toque/deslize no celular.
