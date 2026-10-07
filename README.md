@@ -1,30 +1,31 @@
-# CEI Barra
+# CEI Barra — site institucional + área administrativa
 
-Site institucional da CEI Barra — Centro Evangelístico Internacional, em Barra de São João/RJ.
+Projeto estático React + Vite preparado para GitHub Pages.
 
-## Direção visual
+## Site
+A página inicial usa as fotos reais da CEI Barra, com uma arquitetura mais próxima de um site institucional de igreja: apresentação, programação, recursos, ministérios, eventos, mídia, oração e localização.
 
-A nova interface foi redesenhada para parecer mais natural e próxima de um site de igreja: navegação institucional clara, fotografia real, seções de comunidade, programação, mídia, pedido de oração e localização. Evita aparência de template ou de página de lançamento comercial.
+## Área administrativa
+Abra `admin.html` no mesmo endereço publicado pelo GitHub Pages.
 
-## Imagens
+Acesso de demonstração:
+- usuário: `admin`
+- senha: `cei2026`
 
-As fotos reais ficam em `images/` para o site estático e em `public/images/` para o build Vite. Isso evita os problemas anteriores de caminhos quebrados no GitHub Pages.
+O painel permite editar textos da Home, horários, eventos e visualizar pedidos de oração. Os dados ficam no `localStorage` do navegador. Isso é adequado para prototipação/uso local, mas **não substitui uma autenticação e banco reais** para vários administradores.
+
+## GitHub Pages
+1. Envie o conteúdo deste projeto para a raiz do repositório.
+2. Em Settings → Pages, selecione GitHub Actions (recomendado) ou a raiz do branch.
+3. O site usa `base: './'` para funcionar tanto em domínio próprio quanto em `/CEI.BARRA/`.
 
 ## Desenvolvimento
-
 ```bash
 npm install
 npm run dev
 ```
 
 ## Build
-
 ```bash
 npm run build
 ```
-
-## GitHub Pages
-
-O projeto mantém `base: './'` no Vite e workflow em `.github/workflows/deploy.yml` para publicação por GitHub Actions.
-
-Também existe um `index.html` funcional na raiz para hospedagem direta pelo GitHub Pages, com `images/` na raiz.
