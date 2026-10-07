@@ -1,13 +1,22 @@
 # CEI Barra
 
-Versão estática preparada para GitHub Pages.
+Site institucional estático da CEI Barra — Centro Evangelístico Internacional.
 
-## Publicação
-Esta versão **não depende de Vite, Node ou build** para o site principal. O `index.html` e `admin.html` funcionam diretamente na raiz do GitHub Pages.
+## Destaques
 
-Envie o conteúdo desta pasta para a raiz do repositório. Em Settings → Pages, use `Deploy from a branch` e selecione `main` + `/ (root)`.
+- Design editorial e acolhedor inspirado na linguagem de sites de igreja
+- Carrossel de próximos pregadores/ministrações
+- Programação de cultos
+- Ministérios
+- Eventos
+- Mídia e redes sociais
+- Pedido de oração
+- Área administrativa local
+- Backup e restauração em JSON
 
-## Administração
-Abra `./admin.html`. Usuário: `admin` · Senha: `cei2026`.
+## Admin
 
-Os dados do painel ficam no `localStorage` do navegador nesta versão.
+Acesse `admin.html`.
+
+Usuário: `admin`
+Senha: `cei2026`
