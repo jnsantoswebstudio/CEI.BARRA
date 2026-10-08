@@ -41,35 +41,112 @@ function renderSpeakers(){
 function setupCarousel(count){
   const track=document.getElementById('speakerTrack');
   const dots=document.getElementById('speakerDots');
-  let index=0, timer=null, resizeTimer=null;
-  const visible=()=>window.innerWidth<=760?1:window.innerWidth<=1050?2:3;
-  const maxIndex=()=>Math.max(0,count-visible());
-  const draw=()=>{
+  const prevBtn=document.getElementById('speakerPrev');
+  const nextBtn=document.getElementById('speakerNext');
+  const viewport=document.querySelector('.speaker-viewport');
+  const cards=[...track.querySelectorAll('.speaker-card')];
+  if(count<=1){
+    prevBtn.disabled=true; nextBtn.disabled=true; dots.innerHTML=''; track.style.transform='none';
+    return;
+  }
+
+  // Guarda o conteúdo original e cria clones antes/depois para o loop ser realmente contínuo.
+  const originals=cards.map(c=>c.cloneNode(true));
+  track.innerHTML='';
+  const makeCopies=()=>{
+    const frag=document.createDocumentFragment();
+    [...originals,...originals,...originals].forEach(c=>frag.appendChild(c.cloneNode(true)));
+    track.appendChild(frag);
+  };
+  makeCopies();
+
+  let index=count;
+  let timer=null;
+  let resizeTimer=null;
+  let isAnimating=false;
+  let pointerStartX=0;
+  let pointerStartY=0;
+  let dragging=false;
+
+  const visible=()=>window.innerWidth<=760?1:window.innerWidth<=1050?2:Math.min(3,count);
+  const gap=18;
+  const updateCardWidths=()=>{
     const v=visible();
-    index=Math.min(index,Math.max(0,count-v));
-    const card=track.querySelector('.speaker-card');
-    if(card){const gap=18;const width=card.getBoundingClientRect().width+gap;track.style.transform=`translate3d(${-index*width}px,0,0)`;}
+    const width=(viewport.clientWidth-gap*(v-1))/v;
+    [...track.querySelectorAll('.speaker-card')].forEach(card=>{card.style.flex=`0 0 ${width}px`;});
+    return width;
+  };
+  const position=(animate=true)=>{
+    const width=updateCardWidths();
+    track.style.transition=animate?'transform .55s cubic-bezier(.22,.61,.36,1)':'none';
+    track.style.transform=`translate3d(${-index*(width+gap)}px,0,0)`;
+  };
+  const currentDot=()=>((index-count)%count+count)%count;
+  const renderDots=()=>{
     dots.innerHTML='';
-    const pages=Math.max(1,maxIndex()+1);
-    for(let i=0;i<pages;i++){
-      const b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label',`Ir para grupo ${i+1}`); b.className=i===index?'active':'';
-      b.onclick=()=>{index=i;draw();restart()}; dots.appendChild(b);
+    for(let i=0;i<count;i++){
+      const b=document.createElement('button');
+      b.type='button';
+      b.setAttribute('aria-label',`Ir para o pregador ${i+1}`);
+      b.className=i===currentDot()?'active':'';
+      b.onclick=()=>{goTo(count+i);restart()};
+      dots.appendChild(b);
     }
   };
-  const next=()=>{index=index>=maxIndex()?0:index+1;draw()};
-  const prev=()=>{index=index<=0?maxIndex():index-1;draw()};
-  const restart=()=>{clearInterval(timer);timer=setInterval(next,6500)};
-  document.getElementById('speakerPrev').onclick=()=>{prev();restart()};
-  document.getElementById('speakerNext').onclick=()=>{next();restart()};
-  const viewport=document.querySelector('.speaker-viewport');
-  let downX=0,dragging=false;
-  viewport.onpointerdown=e=>{downX=e.clientX;dragging=true;viewport.setPointerCapture?.(e.pointerId);track.classList.add('dragging');clearInterval(timer)};
-  viewport.onpointerup=e=>{if(!dragging)return;const dx=e.clientX-downX;dragging=false;track.classList.remove('dragging');if(Math.abs(dx)>45){dx<0?next():prev()}draw();restart()};
+  const goTo=(target)=>{
+    if(isAnimating)return;
+    isAnimating=true;
+    index=target;
+    position(true);
+    renderDots();
+  };
+  const next=()=>goTo(index+1);
+  const prev=()=>goTo(index-1);
+  const restart=()=>{clearInterval(timer);timer=setInterval(next,5200)};
+
+  track.addEventListener('transitionend',()=>{
+    // Ao passar pelos clones, volta para o item equivalente sem o usuário perceber.
+    if(index>=count*2){
+      index-=count;
+      position(false);
+    }else if(index< count){
+      index+=count;
+      position(false);
+    }
+    isAnimating=false;
+    renderDots();
+  });
+
+  prevBtn.disabled=false;
+  nextBtn.disabled=false;
+  prevBtn.onclick=()=>{prev();restart()};
+  nextBtn.onclick=()=>{next();restart()};
+
+  viewport.onpointerdown=e=>{
+    pointerStartX=e.clientX; pointerStartY=e.clientY; dragging=true;
+    viewport.setPointerCapture?.(e.pointerId);
+    track.classList.add('dragging');
+    clearInterval(timer);
+  };
+  viewport.onpointerup=e=>{
+    if(!dragging)return;
+    const dx=e.clientX-pointerStartX;
+    const dy=e.clientY-pointerStartY;
+    dragging=false;
+    track.classList.remove('dragging');
+    if(Math.abs(dx)>45 && Math.abs(dx)>Math.abs(dy)) (dx<0?next:prev)();
+    restart();
+  };
   viewport.onpointercancel=()=>{dragging=false;track.classList.remove('dragging');restart()};
-  viewport.onmouseenter=()=>clearInterval(timer);viewport.onmouseleave=restart;
-  viewport.onfocusin=()=>clearInterval(timer);viewport.onfocusout=restart;
-  addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(draw,160)});
-  draw();restart();
+  viewport.onmouseenter=()=>clearInterval(timer);
+  viewport.onmouseleave=()=>{if(!dragging)restart()};
+  viewport.onfocusin=()=>clearInterval(timer);
+  viewport.onfocusout=()=>restart();
+  window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>position(false),160)});
+
+  position(false);
+  renderDots();
+  restart();
 }
 function renderServices(){const list=state.services.filter(x=>x.active);document.getElementById('services').innerHTML=list.map((s,i)=>`<article class="service ${i===0?'today':''}"><div><span class="day">${esc(s.day)}</span><h3>${esc(s.title)}</h3><div class="time">${esc(s.time)}</div><p>${esc(s.description)}</p></div><div class="meta"><span>${esc(s.location)}</span><span>${i===0?'PRÓXIMO':''}</span></div></article>`).join('')||'<p>Nenhum horário cadastrado.</p>';if(list[0]){document.getElementById('heroDay').textContent=`${list[0].day} • ${list[0].time}`;document.getElementById('heroTitle').textContent=list[0].title}}
 function renderEvents(){document.getElementById('events').innerHTML=state.events.filter(x=>x.active).map(e=>`<article class="event"><div class="event-date"><span>${esc(e.month)}</span><strong>${esc(e.day)}</strong></div><div><h3>${esc(e.title)}</h3><p>${esc(e.description)}</p></div></article>`).join('')}
